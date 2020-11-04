@@ -192,7 +192,7 @@ show ip nat statistics					   // liste les NAT du device
  
 # DHCP
 PAT = NAT dynamique  
-``` c
+``` java
 show ip dhcp binding						// liste les NAT du device
 A faire sur le routeur  
 (config) interface FastEthernet 0				// On donne une ip à l’interface  
@@ -212,11 +212,11 @@ reload
 # Configurer un accès SSH
 Définir une IP pour l’interface  
 ``` java
-(config) enable secret monPassword	// Définit le mot de passe quand on enable  
+(config) enable secret monPassword	      // Définit le mot de passe quand on enable  
 (config) hostname nomDuDevice  
-(config) ip domain-name monHote.zz.fr // Configure un nom de domaine ?  
+(config) ip domain-name monHote.zz.fr     // Configure un nom de domaine ?  
 (config) username login secret passwd	// Crée un user avec un password chiffré (en 5)  
-(config) crypto key generate rsa 	// Génère les clés pour le SSH (1024 ou 2048)  
+(config) crypto key generate rsa 	      // Génère les clés pour le SSH (1024 ou 2048)  
 (config) service password encryption 	// Chiffre les mots de passe       // Que si on utilise  « password »  
 (config) line vty  0  15			// Configure des lignes 0 à 15 pour que ssh puisse les modifier ?  
 (config-line) transport input ssh	 	// Autorise les modifications via SSH  
