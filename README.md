@@ -224,26 +224,25 @@ Définir une IP pour l’interface
 ```
 
 # HSRP
-## Partie Gauche ?
+La priorité la plus élevée est le chemin privilégié  
+L'IP virtuelle est une IP qui correspond au réseau commun entre les deux routeurs  
+**L'IP virtuelle deviens la nouvelle Ip du gateway qu'il faudra donner aux machines hôtes**  
+
+## Générique
 ```
-show standby [b] 
-standby [n° groupe] @ip 
-standby [n° groupe] priority [valeur] 
-standby preempt 
-standby name [gName] 
-debug standby ? (ex: packets) 
+standby [n° groupe] ip [@ip de la passerelle virtuelle cible]     // Déclare la passerelle virtuelle pour le groupe donné      
+standby [n° groupe] priority [valeur] preempt                     // Déclare la priorité de notre routeur pour le groupe et le met en routeur de secours
 ```
 
-
-## Partie droite
+## Exemple
 ```
-interface g0/1
-ip address 172.16.10.2 255.255.255.0
-standby version 2
-standby 1 ip 172.16.10.1
-standby 1 priority 150
+configure terminal
+show standby
+interface gigabitethernet 0/0
+standby 100 ip 10.0.0.253
+standby 100 priority 10
 standby preempt
-no shutdown
+end
 ```
 
 
@@ -260,8 +259,7 @@ no shutdown
 exit  
 interface port-channel 1              // Sélectionne et crée une interface Port-channel n°1 (même numéro que le groupe)  
 switchport mode trunk                     // Passer le port-channel en mode trunk pour pouvoir faire passer plusieurs VLANs   
-exit  
-exit                                           
+end                                       
 ```
 
 # Memo
