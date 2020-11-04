@@ -248,17 +248,17 @@ no shutdown
 
 
 # Ether channel
-> Se fait sur un **Switch**  
+Se fait sur un **Switch**  
 Il faut que le channel entre deux switchs aient le même groupe  
 
 ```
 configure terminal  
 interface range fastEthernet 0/1 - 2      // Sélectionner la plage d'interfaces  
 channel-protocol lacp                     // Utilisation du protocole LACP  
-channel-group **1** mode active           // Création d'un groupe EtherChannel n°1 avec le protocole LACP (mode active partout ça marche)  
+channel-group 1 mode active           // Création d'un groupe EtherChannel n°1 avec le protocole LACP (mode active partout ça marche)  
 no shutdown  
 exit  
-interface port-channel **1**              // Sélectionne et crée une interface Port-channel n°1 (même numéro que le groupe)  
+interface port-channel 1              // Sélectionne et crée une interface Port-channel n°1 (même numéro que le groupe)  
 switchport mode trunk                     // Passer le port-channel en mode trunk pour pouvoir faire passer plusieurs VLANs   
 exit  
 exit                                           
