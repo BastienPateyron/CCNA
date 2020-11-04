@@ -1,17 +1,16 @@
-# CCNA
-My personal CCNA Cheatsheet
+# CISCO
 
-CISCO
-
-Classes d’adresses réseau privées et publiques
+# Classes d’adresses réseau privées et publiques
 A : 0.0.0.0 	126.255.255.255	/ 8
 B : 128.0.0.0 	191.255.255.255	/16
 C : 192.0.0.0 	223.255.255.255	/ 24
-Classes réseau privées
+
+# Classes réseau privées
 A : 10.0.0.0 	10.255.255.255		/ 8
 B : 172.16.0.0 	172.31.255.255		/12
 C : 192.168.0.0 	192.168.255.255	/ 16
-Connexion au routeur par série
+
+# Connexion au routeur par série
 1)	Se brancher avec le câble série au port « COM » marqué en bleu
 2)	Lancer « minicom » dans un terminal 	(-s si bug pour le configurer)
 a.	-s : /dev modem -> /dev/tty/S0 ou S1
@@ -19,7 +18,8 @@ b.	Vitesse: 9600 8N1
 Configuration de la machine
 Ifconfig  eth0  192.0.0.2 netmask 255.255.255.0
 route  add default gw 192.0.0.1  eth0.
-Cisco IOS
+
+# Cisco IOS
 s ip int b :	alias pour show ip interface brief
 show ip interface brief : affiche un récapitulatif concis du statut et de la configuration IP.
 show ip route : affiche la table de routage IP entière.
@@ -29,7 +29,8 @@ show running-config | section line vty :
 show running-config | include up : 
 traceroute : trace la route vers la destination
 copy running-config startup-config : copie dans la config de démarrage
-Attribuer une IP au Switch
+
+# Attribuer une IP au Switch
 enable : débute la configuration
 configure terminal : débute la configuration via terminal
 (config)  interface vlan 1 : sélectionne l’interface du commutateur à configurer
@@ -37,28 +38,29 @@ configure terminal : débute la configuration via terminal
 (config-if)  (no) shutdown: éteins l’interface ou bien l’allume si on utilise no en option.
 (config-if) exit : sors de la configuration de l’interface
 (config)  ip default-gateway 192.168.10.1: définit l’IP de la passerelle par défaut du device
-Supprimer l’IP d’un switch
+
+# Supprimer l’IP d’un switch
 (config) interface vlan 1	: sélectionne le vlan 1
 (config-if) no ip address : supprime l’IP d’accès à ce VLAN. (Attention à ne pas être en ssh)
 
-Configuration basique d’un routeur
+# Configuration basique d’un routeur
 Nommer un périphérique
 > enable : élévation de privilèges
 configure terminal ou conf t: entre en mode configuration
 hostname malaria
 
-Configurer une interface
+# Configurer une interface
 (config-if) int fa0/0			
 (config-if) ip addr 192.168.15.10  255.255.255.0
 (config-if) no shutdown
 
-Configurer une sous-interface
+# Configurer une sous-interface
 (config-if) int fa0/0.15			// Crée une sous interface N°15
 (config-subif) encapsulation dot1Q  10	// Définit le type d’encapsulation du vlan
 (config-subif) ip addr 192.168.15.254  255.255.255.0
 (config-subif) no shutdown
 
-Sécuriser les accès de gestion
+# Sécuriser les accès de gestion
 Sécurisation des modes (dans l’ordre) :
 •	Exécution privilégiée avec le password « class »
 •	Exécution utilisateur avec le password « cisco »
@@ -73,16 +75,16 @@ Sécurisation des modes (dans l’ordre) :
 (config) interface loopback 0 : Configuration d’une IP de boucle locale
 (config-if) ip addr 127.0.0.1  255.255.255.0
 
-Configurer l’horloge
+# Configurer l’horloge
 # show controller serial 1/3 : Affiche si on est en DTE ou en DCE
 (config-if) clock rate 64000 : Configuration de la clock rate côté DCE
  
-Routage
+# Routage
 Routage statique
 (config) ip route 172.16.1.0  255.255.255.0  172.16.2.1
 Route par défaut
 (config) ip route 0.0.0.0   0.0.0.0   172.16.2.1 
-RIP
+# RIP
 Création d’une route RIP
 (config) router rip : active le routage en mode RIP
 (config-router) version 2 : met le RIP en version 2 (gère aussi les sous réseaux)
@@ -93,7 +95,7 @@ Suppression d’une route RIP
 (config) router rip
 (config-router)no network 192.168.10.0
 
-OSPF
+# OSPF
 (config) router ospf 100					// 100 : process id ~ correspond au nom
 (config-router) network 145.4.0.0  0.0.0.255 area 0	// Ajout d’une route
 
@@ -109,13 +111,13 @@ RIP vers OSPF
 (config) router rip
 (config-router) redistribute ospf 100 metric 1 	// metric [1-16], 15 = 1 saut, 14 = 2 sauts, 1 = 15 sauts
 
-BGP
+# BGP
 // TODO
 Déclarer les reseaux qui nous appartiennent dans l’AS
 network @réseau mask_si_nécessaire
 neighbor @IP mask_si_nécessaire
 
-EIGRP
+# EIGRP
 TODO
 Mirroring
 Redirection du traffic vu par une interface vers une autre interface
@@ -133,7 +135,7 @@ Redirection du traffic vu par une interface vers une autre interface
 
  
  
-Vlan
+# Vlan
 Configuration d’un Vlan
 # show vlan : montre les vlans du device
 (config) vlan 10,20 : crée les Vlans 10 et 20
@@ -173,7 +175,7 @@ Configuration sous interface routeur
 (config-subif) no shutdown
 
 
-NAT / PAT
+# NAT / PAT
 PAT = NAT dynamique
 
 # show ip nat statistics					// liste les NAT du device
@@ -189,7 +191,7 @@ Configurer un PAT
 (config-if) no shutdown
 (config) ip nat inside source list 1 interface  FastEthernet 4  overload
  
-DHCP
+# DHCP
 PAT = NAT dynamique
 
 # show ip dhcp binding						// liste les NAT du device
@@ -207,7 +209,7 @@ Réinitialiser un appareil
 # delete flash :vlan.dat		// Pour Switchs uniquement
 # reload
 
-Configurer un accès SSH
+# Configurer un accès SSH
 // Définir une IP pour l’interface
 (config) enable secret monPassword	// Définit le mot de passe quand on enable
 (config) hostname nomDuDevice
@@ -219,7 +221,7 @@ Configurer un accès SSH
 (config-line) transport input ssh	 	// Autorise les modifications via SSH
 (config-line) login local			// Rend l’authentification obligatoire et requiert un compte local
 
-Memo
+# Memo
 •	Un Routeur 811 doit être connecté au coeur de réseau par son port WAN
 •	Un Routeur 811 configuré en NAT utilise un VLAN comme IP interne
  
