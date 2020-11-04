@@ -225,15 +225,18 @@ Définir une IP pour l’interface
 
 # HSRP
 ## Partie Gauche ?
+```
 show standby [b] 
 standby [n° groupe] @ip 
 standby [n° groupe] priority [valeur] 
 standby preempt 
 standby name [gName] 
 debug standby ? (ex: packets) 
+```
 
 
 ## Partie droite
+```
 interface g0/1
 ip address 172.16.10.2 255.255.255.0
 standby version 2
@@ -241,13 +244,14 @@ standby 1 ip 172.16.10.1
 standby 1 priority 150
 standby preempt
 no shutdown
-
+```
 
 
 # Ether channel
 > Se fait sur un **Switch**  
 Il faut que le channel entre deux switchs aient le même groupe  
 
+```
 configure terminal  
 interface range fastEthernet 0/1 - 2      // Sélectionner la plage d'interfaces  
 channel-protocol lacp                     // Utilisation du protocole LACP  
@@ -258,7 +262,7 @@ interface port-channel **1**              // Sélectionne et crée une interface
 switchport mode trunk                     // Passer le port-channel en mode trunk pour pouvoir faire passer plusieurs VLANs   
 exit  
 exit                                           
-
+```
 
 # Memo
 •	Un Routeur 811 doit être connecté au coeur de réseau par son port WAN  
