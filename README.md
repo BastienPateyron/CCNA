@@ -120,7 +120,22 @@ network @réseau mask_si_nécessaire
 neighbor @IP mask_si_nécessaire  
 
 # EIGRP
-// TODO  
+Générique
+```
+(config) router eigrp [as number]
+(config-router) network [my network address]
+```
+
+Exemple
+```
+router eigrp 100
+network 15.0.0.0
+```
+
+Vérification:
+```
+# show ip protocols
+``` 
 
 # Mirroring  
 Redirection du traffic vu par une interface vers une autre interface  
@@ -222,6 +237,14 @@ Définir une IP pour l’interface
 (config-line) transport input ssh	 	// Autorise les modifications via SSH  
 (config-line) login local			// Rend l’authentification obligatoire et requiert un compte local  
 ```
+
+
+
+# HSRP
+ // TODO: Rajouter -> OneNote + Check dossier CCNA3
+
+# EtherChannel
+ // TODO: Rajouter -> OneNote + Check dossier CCNA3
 
 # Memo
 •	Un Routeur 811 doit être connecté au coeur de réseau par son port WAN  
