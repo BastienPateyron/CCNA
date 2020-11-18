@@ -214,7 +214,7 @@ A faire sur le routeur
 (config-if) ip addr 192.168.4.1  255.255.255.0  		
 (config) ip dhcp pool CLIENT_LAN				// Crée un pool d’IP « client_lan »  
 (dhcp-config) network 192.168.3.0 255.255.255.0		// Spécifie le réseau du DHCP  
-(dhcp-config) dns-server 8.8.8.8					// DNS par défaut, au hasard  
+(dhcp-config) dns-server 8.8.8.8				// DNS par défaut, au hasard  
 (dhcp-config) default-router 192.168.3.1			// On met l’IP du routeur actuel  
 ```
 
@@ -238,17 +238,49 @@ Définir une IP pour l’interface
 (config-line) login local			// Rend l’authentification obligatoire et requiert un compte local  
 ```
 
-
-
 # HSRP
- // TODO: Rajouter -> OneNote + Check dossier CCNA3
+La priorité la plus élevée est le chemin privilégié  
+L'IP virtuelle est une IP qui correspond au réseau commun entre les deux routeurs  
+**L'IP virtuelle deviens la nouvelle Ip du gateway qu'il faudra donner aux machines hôtes**  
 
-# EtherChannel
- // TODO: Rajouter -> OneNote + Check dossier CCNA3
+## Générique
+```
+standby [n° groupe] ip [@ip de la passerelle virtuelle cible]     // Déclare la passerelle virtuelle pour le groupe donné      
+standby [n° groupe] priority [valeur] preempt                     // Déclare la priorité de notre routeur pour le groupe et le met en routeur de secours
+```
+
+## Exemple
+```
+configure terminal
+show standby
+interface gigabitethernet 0/0
+standby 100 ip 10.0.0.253
+standby 100 priority 10
+standby preempt
+end
+```
+
+
+# Ether channel
+Se fait sur un **Switch**  
+Il faut que le channel entre deux switchs aient le même groupe  
+
+```
+configure terminal  
+interface range fastEthernet 0/1 - 2      // Sélectionner la plage d'interfaces  
+channel-protocol lacp                     // Utilisation du protocole LACP  
+channel-group 1 mode active           // Création d'un groupe EtherChannel n°1 avec le protocole LACP (mode active partout ça marche)  
+no shutdown  
+exit  
+interface port-channel 1              // Sélectionne et crée une interface Port-channel n°1 (même numéro que le groupe)  
+switchport mode trunk                     // Passer le port-channel en mode trunk pour pouvoir faire passer plusieurs VLANs   
+end                                       
+```
 
 # Memo
 •	Un Routeur 811 doit être connecté au coeur de réseau par son port WAN  
 •	Un Routeur 811 configuré en NAT utilise un VLAN comme IP interne  
+
  
 Calculs sous réseaux  
 
