@@ -50,10 +50,23 @@ Nommer un périphérique
 configure terminal ou conf t: entre en mode configuration  
 hostname malaria  
 
+
 # Configurer une interface
 (config-if) int fa0/0  			
 (config-if) ip addr 192.168.15.10  255.255.255.0  
 (config-if) no shutdown  
+
+## Activer IPV6 sur un routeur
+(config) ipv6 unicast-routing
+(config) int FastEthernet 0/0
+(config-if) ipv6 address 2001:0BB9:AABB:1234::Suffixe_souhaité/64
+
+## Activer IPv6 sur un poste client
+Il faut juste passer en allocation automatique
+
+## Pinger en ipv6
+ping 2001:1:2::1        // IP d'un routeur ici par exemple
+
 
 # Configurer une sous-interface
 (config-if) int fa0/0.15			// Crée une sous interface N°15  
@@ -174,12 +187,6 @@ Le mode client interdit la création de nouveaux VLANS
 (config) vtp password cisco1234				// Optionnel  
 
 
-
-
-
-
-
-
 ## Configuration sous interface routeur  
 (conf) interface FastEthernet 0/0  
 (conf-if) no shutdown			// Active l’interface mère  
@@ -237,6 +244,22 @@ Définir une IP pour l’interface
 (config-line) transport input ssh	 	// Autorise les modifications via SSH  
 (config-line) login local			// Rend l’authentification obligatoire et requiert un compte local  
 ```
+
+## Exemple
+``` java
+conf t
+enable secret cisco
+hostname Routeur4	
+ip domain-name routeur4.zz.fr
+username admin secret cisco
+crypto key generate rsa
+2048 	
+line vty  0  15		
+transport input ssh	
+login local
+exit
+exit
+```	
 
 # HSRP
 La priorité la plus élevée est le chemin privilégié  
