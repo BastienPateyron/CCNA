@@ -112,7 +112,12 @@ show controller serial 1/3 : Affiche si on est en DTE ou en DCE
 
 # OSPF
 (config) router ospf 100					// 100 : process id ~ correspond au nom  
-(config-router) network 145.4.0.0  0.0.0.255 area 0	// Ajout d’une route  
+(config-router) network 145.4.0.0  0.0.0.255 area 0	// Ajout d’une route en zone 0
+
+## Zones OSPF
+Il faut utiliser la commande précédente.  
+'area 0' correspond à la zone principale dite 'backbone ?'.  
+Toutes les autres zones ('area 1', 'area 2', ...) doivent y être rattachées.  
 
 ## Redistribution inter-protocol  
 Il faut le configurer sur les deux interfaces du routeur. Côté RIP et côté OSPF  
