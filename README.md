@@ -1,4 +1,4 @@
-# CISCO
+# C I S C O
 
 # Classes d’adresses réseau privées et publiques
 A : 0.0.0.0 	126.255.255.255	/ 8  
@@ -239,15 +239,15 @@ reload
 # Configurer un accès SSH
 Définir une IP pour l’interface  
 ``` java
-(config) enable secret monPassword	      // Définit le mot de passe quand on enable  
+(config) enable secret monPassword        // Définit le mot de passe quand on enable  
 (config) hostname nomDuDevice  
 (config) ip domain-name monHote.zz.fr     // Configure un nom de domaine ?  
-(config) username login secret passwd   	// Crée un user avec un password chiffré (en 5)  
-(config) crypto key generate rsa 	      // Génère les clés pour le SSH (1024 ou 2048)  
-(config) service password encryption   	// Chiffre les mots de passe       // Que si on utilise  « password »  
-(config) line vty  0  15		  	// Configure des lignes 0 à 15 pour que ssh puisse les modifier ?  
-(config-line) transport input ssh	 	// Autorise les modifications via SSH  
-(config-line) login local			// Rend l’authentification obligatoire et requiert un compte local  
+(config) username login secret passwd     // Crée un user avec un password chiffré (en 5)  
+(config) crypto key generate rsa          // Génère les clés pour le SSH (1024 ou 2048)  
+(config) service password-encryption      // Chiffre les mots de passe. Utilie que si on utilise  « password »  
+(config) line vty  0  15                  // Configure des lignes 0 à 15 pour que ssh puisse les modifier ?  
+(config-line) transport input ssh         // Autorise les modifications via SSH  
+(config-line) login local                 // Rend l’authentification obligatoire et requiert un compte local  
 ```
 
 ## Exemple
@@ -302,25 +302,41 @@ Il faut que le channel entre deux switchs aient le même groupe
 configure terminal  
 interface range fastEthernet 0/1 - 2      // Sélectionner la plage d'interfaces  
 channel-protocol lacp                     // Utilisation du protocole LACP  
-channel-group 1 mode active           // Création d'un groupe EtherChannel n°1 avec le protocole LACP (mode active partout ça marche)  
+channel-group 1 mode active               // Création d'un groupe EtherChannel n°1 avec le protocole LACP (mode active partout ça marche)  
 no shutdown  
 exit  
-interface port-channel 1              // Sélectionne et crée une interface Port-channel n°1 (même numéro que le groupe)  
+interface port-channel 1                  // Sélectionne et crée une interface Port-channel n°1 (même numéro que le groupe)  
 switchport mode trunk                     // Passer le port-channel en mode trunk pour pouvoir faire passer plusieurs VLANs   
 end                                       
 ```
 
-# Connexions point à point
-## PPP
- // TODO
+# Connexions point à point PPP
+Le PAP est beaucoup utilisé. Ex: Avec une box domestique
+
+## PAP
+Ne garantie pas la confidentialité. Man-in the middle, rejeu etc.. 
+``` bash
+R1(config) username R2 secret cisco  # Pour autoriser le routeur R2
+R1(config) username R3 secret cisco  # Pour autoriser le routeur R3
+R1(config-if) encapsulation ppp      # /!\ Attention au SSH: cette commande coupe les flux de l'interface si les deux côtés ne sont pas configurés
+R1(config-if) ppp authentication pap
+R1(config-if) ppp pap sent-username R1 password cisco  # On se conecte en tant que "R1" avec le mot de passe "cisco" non hashé
+``` 
+
 ## CHAP
- // TODO
+Mot de passe hashé en md5
+Protège du rejeu
+/!\ Il semble qu'il faille avoir un hostname identique à celui déclaré par l'autre noeud
+
+``` bash
+R1(config) username R2 secret cisco  # Pour autoriser le routeur R2
+R1(config-if) encapsulation ppp
+R1(config-if) ppp authentication chap      
+```
 
 # Memo
-•	Un Routeur 811 doit être connecté au coeur de réseau par son port WAN  
-•	Un Routeur 811 configuré en NAT utilise un VLAN comme IP interne  
+• Un Routeur 811 doit être connecté au coeur de réseau par son port WAN  
+• Un Routeur 811 configuré en NAT utilise un VLAN comme IP interne  
 
- 
-Calculs sous réseaux  
-
+ Calculs de sous-réseaux
  
