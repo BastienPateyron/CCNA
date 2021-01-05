@@ -266,6 +266,11 @@ exit
 exit
 ```	
 
+## Connexion
+``` bash
+ssh -l admin 192.168.2.1
+```
+
 # HSRP
 La priorité la plus élevée est le chemin privilégié  
 L'IP virtuelle est une IP qui correspond au réseau commun entre les deux routeurs  
@@ -304,6 +309,12 @@ interface port-channel 1              // Sélectionne et crée une interface Por
 switchport mode trunk                     // Passer le port-channel en mode trunk pour pouvoir faire passer plusieurs VLANs   
 end                                       
 ```
+
+# Connexions point à point
+## PPP
+ // TODO
+## CHAP
+ // TODO
 
 # Memo
 •	Un Routeur 811 doit être connecté au coeur de réseau par son port WAN  
