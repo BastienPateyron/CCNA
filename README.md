@@ -436,8 +436,60 @@ no access-list 100
 no access-list 101
 ```
 
-## QoS
-TODO
+## QoS - Qualité de service
+1.    Définir une class-map nommée 'voice' sur le routeur output (ici le routeur 4) :
+```
+Class-map voice 
+Match protocol rtp
+Class-map http
+Match protocol http
+Class-map icmp
+Match protocop icmp
+```
+2.    Définir une policy-map
+```
+Policy-map toto
+Class voice
+Set ip dscp ef
+Bandwidth 100
+Class http
+Set ip dscp af41
+Bandwidth 50
+Class icmp
+Set ip dscp af11
+Bandwidth 35
+```
+3.    Mettre la policy sur une interface
+```
+Int fa0/1
+Service-policy output toto
+Sh policy-map int fa0/1
+```
+
+Sur l’autre routeur input :
+```
+Class-map voice
+Match ip dscp ef
+Class-map http
+Match ip dscp af41
+Class-map icmp
+Match ip dscp af11
+
+Policy-map titi
+Class voice 
+set precedence 5
+Exit
+Class http
+Set precedence 3
+Exit
+Class icmp
+Set precedence 1
+
+Int fa0/0
+Service-policy input titi
+Exit
+Sh policy-map int fa0/0
+```
 
 ## RSPAN - Pour sniffer avec Wireshark
 https://www.networkstraining.com/how-to-configure-cisco-span-rspan-erspan/
