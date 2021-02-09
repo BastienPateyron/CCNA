@@ -434,9 +434,14 @@ exit
 conf t
 no access-list 100
 no access-list 101
-
-
 ```
+
+## QoS
+TODO
+
+## RSPAN - Pour sniffer avec Wireshark
+https://www.networkstraining.com/how-to-configure-cisco-span-rspan-erspan/
+TODO
 
 # Memo
 • Un Routeur 811 doit être connecté au coeur de réseau par son port WAN  
