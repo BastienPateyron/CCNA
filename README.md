@@ -1,6 +1,5 @@
 # C I S C O
 
-
 # Classes d’adresses réseau privées et publiques
 A : 0.0.0.0 	126.255.255.255	/ 8  
 B : 128.0.0.0 	191.255.255.255	/16  
