@@ -254,8 +254,8 @@ Définir une IP pour l’interface
 ``` java
 conf t
 enable secret cisco
-hostname Routeur4	
-ip domain-name routeur4.zz.fr
+hostname Router4	
+ip domain-name router4.zz.fr
 username admin secret cisco
 crypto key generate rsa
 2048 	
@@ -266,9 +266,16 @@ exit
 exit
 ```	
 
-## Connexion
+## Connexion SSH
 ``` bash
 ssh -l admin 192.168.2.1
+```
+
+## Connexion FTP
+``` bash
+ftp 192.168.2.1
+cisco
+cisco
 ```
 
 # HSRP
@@ -332,6 +339,103 @@ Protège du rejeu
 R1(config) username R2 secret cisco  # Pour autoriser le routeur R2
 R1(config-if) encapsulation ppp
 R1(config-if) ppp authentication chap      
+```
+
+# ACL - Access Control List
+Il faut mettre l'ACL sur une interface pour l'activer
+ACL étendue: la plus proche de la source : pour bloquer un protocole plus spécifique
+ACL standard: la plus proche de la sortie : (src + dst) jsute pour bloquer un réseau
+
+On peut tout faire en **étendue**
+## Manipulation des ACL
+
+### ACL numérotée
+ACL standard: 1-99, 1300-1999  
+ACL étendue:  100-199, 2000-2699
+
+⚠️ **Masque inversé**    
+0.0.0.0 : Match exactement une ip  
+0.0.0.255 : Match une ip dans un /24  
+
+```
+access-list <id> {deny|permit|remark} <src addr> [mask]
+```
+
+### ACL nommée
+```
+ip access-list {standard|extended} <nom>
+```
+Puis entrer ligne par ligne  
+
+### Supprimer une liste ACL avec **no**
+```
+no access-list 42
+```
+## Création de règle dans une ACL (nommée ?)
+```
+{permit|deny} <proto> {<src>} {<dest>} [established]
+```
+```
+Avec: src / dest = <addr> [<mask>] [<op> <port>]
+Avec: op = lt "less than" / gt / eq / neq / range
+Avec: any = alias de "0.0.0.0 255.255.255.255"
+```
+
+On peut utiliser des noms de port ex: https ou ftp  
+Penser à utiliser " **?** "  
+
+## Appliquer une ACL sur une interface
+```
+conf t
+interface fastEthernet 0/0
+ip access-group {nom-acl|id-acl} {in|out}
+```
+
+## Autoriser une connexion sur un routeur
+```
+access-class ...
+```
+
+## Vérification
+show access-list
+
+
+## Exemple type pour l'access list n°1
+``` 
+!--- Regles de sortie
+conf t
+ip access-list extended 100
+permit tcp 10.0.0.0 0.0.0.255 20.0.0.0 0.0.0.255 eq 80
+permit tcp 10.0.0.0 0.0.0.255 20.0.0.0 0.0.0.255 eq 443
+permit tcp 10.0.0.0 0.0.0.255 20.0.0.0 0.0.0.255 range 20 21
+exit
+
+!--- Deploiement de l'ACL des sorties sur l'interface
+interface fastEthernet 0/0
+ip access-group 100 in ??????? or out ????
+exit
+
+!--- Regles de sortie
+conf t
+ip access-list extended 101
+permit ip 30.0.0.0 0.0.0.255 10.0.0.0 0.0.0.255
+
+exit
+
+!--- Deploiement de l'ACL des entrees sur l'interface
+interface fastEthernet 0/0
+ip access-group 101 out
+exit
+
+```
+
+## Suppression d'une ACL
+```
+conf t
+no access-list 100
+no access-list 101
+
+
 ```
 
 # Memo
