@@ -441,6 +441,7 @@ TODO
 
 ## RSPAN - Pour sniffer avec Wireshark
 https://www.networkstraining.com/how-to-configure-cisco-span-rspan-erspan/
+https://www.cisco.com/c/fr_ca/support/docs/switches/nexus-7000-series-switches/113438-rspan-nexus-7000-00.html
 TODO
 
 # Memo
